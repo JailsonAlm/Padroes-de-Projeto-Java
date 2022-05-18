@@ -39,7 +39,7 @@ public class CienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente buscarPorId(Long id) {
+    public Cliente buscarPorId(Long id)  {
         // Buscar Cliente por ID.
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.get();
