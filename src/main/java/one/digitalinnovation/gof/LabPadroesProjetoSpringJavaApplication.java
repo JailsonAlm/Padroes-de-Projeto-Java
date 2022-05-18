@@ -3,6 +3,7 @@ package one.digitalinnovation.gof;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Projeto Spring Boot gerado via Spring Initializr
@@ -15,6 +16,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author JailsonAlm
  */
 
+@EnableWebMvc
 @EnableFeignClients
 @SpringBootApplication
 public class LabPadroesProjetoSpringJavaApplication {
