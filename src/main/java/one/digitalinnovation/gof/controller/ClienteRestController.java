@@ -1,11 +1,15 @@
 package one.digitalinnovation.gof.controller;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.gof.exception.ClientNotFoundException;
 import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Esse ResteController representa a Facade, pois abstrai toda
@@ -17,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("Clientes")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ClienteRestController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
 
     @GetMapping
     public ResponseEntity<Iterable<Cliente>> buscarTodos(){
@@ -28,23 +32,27 @@ public class ClienteRestController {
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id)  throws ClientNotFoundException {
         return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> inserir(@RequestBody Cliente cliente) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Cliente> inserir(@RequestBody @Valid Cliente cliente) {
         clienteService.inserir(cliente);
         return ResponseEntity.ok(cliente);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente)  throws ClientNotFoundException{
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody @Valid Cliente cliente)  throws ClientNotFoundException{
         clienteService.atualizar(id, cliente);
         return ResponseEntity.ok(cliente);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deletar(@PathVariable Long id) throws ClientNotFoundException {
         clienteService.deletar(id);
         return ResponseEntity.ok().build();

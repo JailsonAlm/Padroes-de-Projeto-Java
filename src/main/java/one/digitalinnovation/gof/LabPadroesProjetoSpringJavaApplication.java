@@ -13,6 +13,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * - H2 Database
  * - OpenFeing
  *
+ * 192.168.0.107:8080/ger-ui.html
+ *
  * @author JailsonAlm
  */
 

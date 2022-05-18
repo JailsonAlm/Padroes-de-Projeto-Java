@@ -1,5 +1,6 @@
 package one.digitalinnovation.gof.service.impl;
 
+import one.digitalinnovation.gof.exception.ClientNotFoundException;
 import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.model.ClienteRepository;
 import one.digitalinnovation.gof.model.Endereco;
@@ -7,6 +8,7 @@ import one.digitalinnovation.gof.model.EnderecoRepository;
 import one.digitalinnovation.gof.service.ClienteService;
 import one.digitalinnovation.gof.service.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -39,9 +41,12 @@ public class CienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente buscarPorId(Long id)  {
+    public Cliente buscarPorId(Long id) throws ClientNotFoundException {
         // Buscar Cliente por ID.
         Optional<Cliente> cliente = clienteRepository.findById(id);
+        if (cliente.isEmpty()){
+            throw new ClientNotFoundException(id);
+        }
         return cliente.get();
     }
 
@@ -51,17 +56,24 @@ public class CienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void atualizar(Long id, Cliente cliente) {
+    public void atualizar(Long id, Cliente cliente) throws ClientNotFoundException {
         // Buscar Cliente por ID, caso exista:
         Optional<Cliente> clienteBd = clienteRepository.findById(id);
         if (clienteBd.isPresent()) {
             salvarClienteComCep(cliente);
         }
+        if (clienteBd.isEmpty()){
+            throw new ClientNotFoundException(id);
+        }
     }
 
     @Override
-    public void deletar(Long id) {
+    public void deletar(Long id) throws ClientNotFoundException {
         // Deletar Cliente por ID.
+        Optional<Cliente> clienteDelete = clienteRepository.findById(id);
+        if (clienteDelete.isEmpty()){
+            throw new ClientNotFoundException(id);
+        }
         clienteRepository.deleteById(id);
     }
 
